@@ -5,6 +5,7 @@ import com.vaadin.flow.component.treegrid.TreeGrid;
 import io.github.ctliv.eventbus.EventBusAwareScope;
 import io.github.ctliv.eventbus.bus.EventBusAwareBus;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -16,17 +17,17 @@ public class EventBusAwareScopeDialog extends Dialog {
         private Object obj;
 
         public static Collection<Envelope> of(Object[] values) {
-            if (values == null) return List.of();
+            if (values == null) return new ArrayList<>();
             return of(Arrays.stream(values).collect(Collectors.toList()));
         }
 
         public static Collection<Envelope> of(Collection<Object> objects) {
-            if (objects == null) return List.of();
+            if (objects == null) return new ArrayList<>();
             return objects.stream().map(Envelope::new).collect(Collectors.toList());
         }
 
         public static Collection<Envelope> of() {
-            return List.of();
+            return new ArrayList<>();
         }
 
         public Envelope(Object obj) {
@@ -98,7 +99,7 @@ public class EventBusAwareScopeDialog extends Dialog {
                     .collect(Collectors.toList());
         } else if (obj instanceof BusDetail) {
             BusDetail detail = (BusDetail) obj;
-            if (detail.bus == null) return List.of();
+            if (detail.bus == null) return new ArrayList<>();
             return Envelope.of(detail.bus.getSubscriberSet());
         } else if (obj instanceof EventBusAwareBus) {
             EventBusAwareBus bus = (EventBusAwareBus) obj;
