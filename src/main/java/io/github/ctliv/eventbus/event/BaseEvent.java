@@ -16,6 +16,16 @@ import java.util.function.Predicate;
 
 public class BaseEvent extends EventObject {
 
+    private static final boolean SPRING_SECURITY_DETECTED;
+
+    static {
+        String basePackage = "org.springframework.security";
+        SPRING_SECURITY_DETECTED =
+                Utl.exists(basePackage + ".authentication.AnonymousAuthenticationToken") &&
+                Utl.exists(basePackage + ".core.Authentication") &&
+                Utl.exists(basePackage + ".core.context.SecurityContextHolder");
+    }
+
     public static <T extends BaseEvent> Predicate<BaseEvent> isInstanceOf(BaseEvent event, Class<T> type) {
         Utl.allNotNull(event, type);
         return baseEvent -> type.isInstance(event);
@@ -31,29 +41,14 @@ public class BaseEvent extends EventObject {
 
     public static Predicate<BaseEvent> fromUI(UI... uis) {
         return event -> checkIsIn(event.getUi(), uis);
-/*
-        Utl.allNotNull((Object[]) uis);
-        return event -> Arrays.stream(uis)
-                .anyMatch(ui -> ui == null ? event.getUi() == null : ui.equals(event.getUi()));
-*/
     }
 
     public static Predicate<BaseEvent> from(Object... objects) {
         return event -> checkIsIn(event.getSource(), objects);
-/*
-        Utl.allNotNull(objects);
-        return event -> Arrays.stream(objects)
-                .anyMatch(obj -> obj == null ? event.getSource() == null : obj.equals(event.getSource()));
-*/
     }
 
     public static Predicate<BaseEvent> withScope(EventBusAwareScope... scopes) {
         return event -> checkIsIn(event.getScope(), scopes);
-/*
-        Utl.allNotNull((Object[]) scopes);
-        return event -> Arrays.stream(scopes)
-                .anyMatch(scope -> scope == null ? event.getScope() == null : scope.equals(event.getScope()));
-*/
     }
 
     public static Predicate<BaseEvent> withUiScope() {
@@ -76,14 +71,16 @@ public class BaseEvent extends EventObject {
     public BaseEvent(Object source) {
         super(source);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
-            try {
-                this.user = authentication.getPrincipal();
-            } catch (Exception ignored) { /* Noop*/ }
-            try {
-                this.username = authentication.getName();
-            } catch (Exception ignored) { /* Noop*/ }
+        if (SPRING_SECURITY_DETECTED) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
+                try {
+                    this.user = authentication.getPrincipal();
+                } catch (Exception ignored) { /* Noop*/ }
+                try {
+                    this.username = authentication.getName();
+                } catch (Exception ignored) { /* Noop*/ }
+            }
         }
         this.ui = UI.getCurrent();
         thread = Thread.currentThread();
