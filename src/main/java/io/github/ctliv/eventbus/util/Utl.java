@@ -254,17 +254,23 @@ public class Utl {
     public static <T> Tapper<T> with(T object) { return new Tapper<>(object, t -> t); }
 */
 
-    //------- Collection utils --------
+    //------- Class Utils -------
 
-    public static <T> Stream<T> stream(Collection<T>... collections) {
-        if (collections == null) return Stream.of();
-        return Arrays.stream(collections)
-                .flatMap(Collection::stream);
+    public static boolean exists(String className) {
+        return forName(className) != null;
+    }
+    public static Class<?> forName(String className) {
+        if (isEmpty(className)) return null;
+        try {
+            return Class.forName(trim(className));
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
     }
 
     //------- Other String Utils -------
 
-/*  Ues Apache Commons Lang3
+/*  Uses Apache Commons Lang3
     public static String left(String str, int len) {
         return StringUtils.left(str, len);
     }
