@@ -3,13 +3,11 @@ package io.github.ctliv.eventbus.util;
 import com.google.common.base.Strings;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 public class Utl {
 
@@ -235,6 +233,15 @@ public class Utl {
             if (negative != null) negative.run();
             return false;
         }
+    }
+
+    //------- Object Utils -------
+
+    @SafeVarargs
+    public static <T> boolean isIn(T obj, T... objects) {
+        if (objects == null) return obj == null;
+        if (!objects.getClass().isArray()) return objects.equals(obj);
+        return Arrays.stream(objects).filter(Objects::nonNull).anyMatch(t -> t.equals(obj));
     }
 
 /*
