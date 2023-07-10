@@ -1,0 +1,18 @@
+{
+  "productionMode": true,
+  "useDeprecatedV14Bootstrapping": false,
+  "eagerServerLoad": false,
+  "npmFolder": "C:\\Users\\toncelli\\Dev\\workspace\\event-bus-aware-addon",
+  "node.version": "v18.12.1",
+  "node.download.root": "https://nodejs.org/dist/",
+  "generatedFolder": "C:\\Users\\toncelli\\Dev\\workspace\\event-bus-aware-addon\\target\\frontend",
+  "frontendFolder": "C:\\Users\\toncelli\\Dev\\workspace\\event-bus-aware-addon\\frontend",
+  "connect.javaSourceFolder": "C:\\Users\\toncelli\\Dev\\workspace\\event-bus-aware-addon\\src\\main\\java",
+  "javaResourceFolder": "C:\\Users\\toncelli\\Dev\\workspace\\event-bus-aware-addon\\src\\main\\resources",
+  "connect.applicationProperties": "C:\\Users\\toncelli\\Dev\\workspace\\event-bus-aware-addon\\src\\main\\resources\\application.properties",
+  "connect.openApiFile": "C:\\Users\\toncelli\\Dev\\workspace\\event-bus-aware-addon\\target\\generated-resources\\openapi.json",
+  "project.frontend.generated": "C:\\Users\\toncelli\\Dev\\workspace\\event-bus-aware-addon\\frontend\\generated",
+  "pnpm.enable": false,
+  "require.home.node": false,
+  "build.folder": "target"
+}

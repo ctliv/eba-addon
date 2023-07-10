@@ -1,0 +1,16 @@
+{
+  "frontendFolder": "C:/Users/toncelli/Dev/workspace/event-bus-aware-addon/frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "C:/Users/toncelli/Dev/workspace/event-bus-aware-addon/frontend/generated/jar-resources",
+  "staticOutput": "target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "target/classes/META-INF/VAADIN/webapp/../config/",
+  "frontendBundleOutput": "target/classes/META-INF/VAADIN/webapp/",
+  "jarResourcesFolder": "C:/Users/toncelli/Dev/workspace/event-bus-aware-addon/frontend/generated/jar-resources",
+  "generatedFlowImportsFolder": "target/frontend",
+  "themeName": "",
+  "clientServiceWorkerSource": "C:\\Users\\toncelli\\Dev\\workspace\\event-bus-aware-addon\\target\\sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}
