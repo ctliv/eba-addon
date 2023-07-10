@@ -200,6 +200,7 @@
                     </altDeploymentRepository>
                 </configuration>
             </plugin>
+            <!-- https://www.baeldung.com/maven-repo-github -->
             <plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
