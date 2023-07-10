@@ -4,13 +4,13 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import io.github.ctliv.eventbus.util.Utl;
 import io.github.ctliv.eventbus.EventBusAwareScope;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.Arrays;
 import java.util.EventObject;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -18,12 +18,15 @@ public class BaseEvent extends EventObject {
 
     private static final boolean SPRING_SECURITY_DETECTED;
 
+    private static final Logger log = LoggerFactory.getLogger(BaseEvent.class);
+
     static {
         String basePackage = "org.springframework.security";
         SPRING_SECURITY_DETECTED =
                 Utl.exists(basePackage + ".authentication.AnonymousAuthenticationToken") &&
                 Utl.exists(basePackage + ".core.Authentication") &&
                 Utl.exists(basePackage + ".core.context.SecurityContextHolder");
+        log.debug("EventBusAware: Spring security "  + (SPRING_SECURITY_DETECTED ? "": "not ") + "detected");
     }
 
     public static <T extends BaseEvent> Predicate<BaseEvent> isInstanceOf(BaseEvent event, Class<T> type) {
@@ -40,29 +43,39 @@ public class BaseEvent extends EventObject {
     }
 
     public static Predicate<BaseEvent> fromUI(UI... uis) {
-        return event -> checkIsIn(event.getUi(), uis);
+        return event -> Utl.isIn(event.getUi(), uis);
     }
 
-    public static Predicate<BaseEvent> from(Object... objects) {
-        return event -> checkIsIn(event.getSource(), objects);
+    public static Predicate<BaseEvent> fromSource(Object... objects) {
+        return event -> Utl.isIn(event.getSource(), objects);
+    }
+
+    public static Predicate<BaseEvent> fromMe() {
+        return event -> {
+            if (!SPRING_SECURITY_DETECTED) throw new IllegalStateException("Spring security not detected");
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || authentication instanceof  AnonymousAuthenticationToken) {
+                return event.isAnonymousUser();
+            } else {
+                Object sender = event.getUser().orElse(null);
+                try {
+                    return authentication.getPrincipal().equals(sender);
+                } catch (Exception ignored) { /* Noop*/ }
+                return false;
+            }
+        };
     }
 
     public static Predicate<BaseEvent> withScope(EventBusAwareScope... scopes) {
-        return event -> checkIsIn(event.getScope(), scopes);
+        return event -> Utl.isIn(event.getScope(), scopes);
     }
 
     public static Predicate<BaseEvent> withUiScope() {
         return withScope(EventBusAwareScope.VUI);
     }
 
-    @SafeVarargs
-    protected static <T> boolean checkIsIn(T val, T... ts) {
-        if (ts == null) return val == null;
-        if (!ts.getClass().isArray()) return ts.equals(val);
-        return Arrays.stream(ts).filter(Objects::nonNull).anyMatch(t -> t.equals(val));
-    }
-
     private EventBusAwareScope scope = null;
+    private boolean anonymousUser;
     private transient Object user;
     private String username;
     private final UI ui;
@@ -73,7 +86,10 @@ public class BaseEvent extends EventObject {
 
         if (SPRING_SECURITY_DETECTED) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
+            if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+                anonymousUser = true;
+            } else {
+                anonymousUser = false;
                 try {
                     this.user = authentication.getPrincipal();
                 } catch (Exception ignored) { /* Noop*/ }
@@ -92,6 +108,10 @@ public class BaseEvent extends EventObject {
 
     public void setScope(EventBusAwareScope scope) {
         this.scope = scope;
+    }
+
+    public boolean isAnonymousUser() {
+        return anonymousUser;
     }
 
     public Optional<Object> getUser() {
