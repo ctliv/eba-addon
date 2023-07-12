@@ -171,15 +171,6 @@ public class Utl {
         return eq(firstValue, secondValue);
     }
 
-    //------- In --------
-
-    @SafeVarargs
-    public static <T> boolean in(T obj, T... values) {
-        if (values == null) return obj == null;
-        if (obj == null) return false;
-        return Arrays.asList(values).contains(obj);
-    }
-
     //------- Conversion --------
 
     public static <T> T cast(Object obj, Class<T> type) {
@@ -238,10 +229,11 @@ public class Utl {
     //------- Object Utils -------
 
     @SafeVarargs
-    public static <T> boolean isIn(T obj, T... objects) {
+    public static <T> boolean in(T obj, T... objects) {
         if (objects == null) return obj == null;
+        if (obj == null) return false;
         if (!objects.getClass().isArray()) return objects.equals(obj);
-        return Arrays.stream(objects).filter(Objects::nonNull).anyMatch(t -> t.equals(obj));
+        return Arrays.asList(objects).contains(obj);
     }
 
 /*

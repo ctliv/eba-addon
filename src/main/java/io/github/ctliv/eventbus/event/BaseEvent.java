@@ -43,11 +43,11 @@ public class BaseEvent extends EventObject {
     }
 
     public static Predicate<BaseEvent> fromUI(UI... uis) {
-        return event -> Utl.isIn(event.getUi(), uis);
+        return event -> Utl.in(event.getUi(), uis);
     }
 
     public static Predicate<BaseEvent> fromSource(Object... objects) {
-        return event -> Utl.isIn(event.getSource(), objects);
+        return event -> Utl.in(event.getSource(), objects);
     }
 
     public static Predicate<BaseEvent> fromMe() {
@@ -67,7 +67,7 @@ public class BaseEvent extends EventObject {
     }
 
     public static Predicate<BaseEvent> withScope(EventBusAwareScope... scopes) {
-        return event -> Utl.isIn(event.getScope(), scopes);
+        return event -> Utl.in(event.getScope(), scopes);
     }
 
     public static Predicate<BaseEvent> withUiScope() {
