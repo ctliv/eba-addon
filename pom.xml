@@ -10,14 +10,17 @@
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>8</java.version>
+        <!-- https://www.baeldung.com/maven-repo-github -->
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.release>8</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <vaadin.version>23.3.0</vaadin.version>
         <guava.version>31.1-jre</guava.version>
         <spring.version>5.3.28</spring.version>
         <spring-security.version>5.8.3</spring-security.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
-
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <repo.local.path>mvn-repo</repo.local.path>
         <repo.branch.name>repo</repo.branch.name>
@@ -143,30 +146,6 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-maven-plugin</artifactId>
-                <version>${vaadin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-frontend</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <productionMode>true</productionMode>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>3.3.0</version>
                 <executions>
@@ -178,19 +157,6 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.5.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.8.2</version>
