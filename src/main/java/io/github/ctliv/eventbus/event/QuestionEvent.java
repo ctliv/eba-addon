@@ -1,6 +1,6 @@
 package io.github.ctliv.eventbus.event;
 
-import io.github.ctliv.eventbus.util.Utl;
+import io.github.ctliv.eventbus.util.EbaUtl;
 
 import java.util.HashMap;
 import java.util.function.Predicate;
@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 public class QuestionEvent extends BaseEvent {
 
     public static Predicate<BaseEvent> withQuestions() {
-        return event -> !Utl.cast(event, QuestionEvent.class).getQuestions().isEmpty();
+        return event -> !EbaUtl.cast(event, QuestionEvent.class).getQuestions().isEmpty();
     }
 
     private final HashMap<Object, String> questions = new HashMap<>();
@@ -18,8 +18,8 @@ public class QuestionEvent extends BaseEvent {
     }
 
     public void addQuestion(Object source, String message) {
-        Utl.notNull(source);
-        Utl.notEmpty(message);
+        EbaUtl.notNull(source);
+        EbaUtl.notEmpty(message);
 
         questions.put(source, message);
     }

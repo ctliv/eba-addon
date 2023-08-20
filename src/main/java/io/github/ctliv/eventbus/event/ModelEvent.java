@@ -1,8 +1,9 @@
 package io.github.ctliv.eventbus.event;
 
-import io.github.ctliv.eventbus.util.Utl;
+import io.github.ctliv.eventbus.util.EbaUtl;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class ModelEvent<T> extends PayloadEvent<T> {
@@ -34,10 +35,10 @@ public class ModelEvent<T> extends PayloadEvent<T> {
 	}
 
 	public static Predicate<BaseEvent> withAction(ModelAction... actions) {
-		Utl.allNotNull((Object[]) actions);
+		EbaUtl.allNotNull((Object[]) actions);
 		return event -> {
-			ModelEvent<?> modelEvent = Utl.cast(event, ModelEvent.class);
-			return Arrays.stream(actions).anyMatch(action -> Utl.eq(action, modelEvent.getAction()));
+			ModelEvent<?> modelEvent = EbaUtl.cast(event, ModelEvent.class);
+			return Arrays.stream(actions).anyMatch(action -> Objects.equals(action, modelEvent.getAction()));
 		};
 	}
 

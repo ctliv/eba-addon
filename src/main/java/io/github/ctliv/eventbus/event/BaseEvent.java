@@ -2,7 +2,7 @@ package io.github.ctliv.eventbus.event;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
-import io.github.ctliv.eventbus.util.Utl;
+import io.github.ctliv.eventbus.util.EbaUtl;
 import io.github.ctliv.eventbus.EventBusAwareScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,14 +23,14 @@ public class BaseEvent extends EventObject {
     static {
         String basePackage = "org.springframework.security";
         SPRING_SECURITY_DETECTED =
-                Utl.exists(basePackage + ".authentication.AnonymousAuthenticationToken") &&
-                Utl.exists(basePackage + ".core.Authentication") &&
-                Utl.exists(basePackage + ".core.context.SecurityContextHolder");
+                EbaUtl.exists(basePackage + ".authentication.AnonymousAuthenticationToken") &&
+                EbaUtl.exists(basePackage + ".core.Authentication") &&
+                EbaUtl.exists(basePackage + ".core.context.SecurityContextHolder");
         log.debug("EventBusAware: Spring security "  + (SPRING_SECURITY_DETECTED ? "": "not ") + "detected");
     }
 
     public static <T extends BaseEvent> Predicate<BaseEvent> isInstanceOf(BaseEvent event, Class<T> type) {
-        Utl.allNotNull(event, type);
+        EbaUtl.allNotNull(event, type);
         return baseEvent -> type.isInstance(event);
     }
 
@@ -43,11 +43,11 @@ public class BaseEvent extends EventObject {
     }
 
     public static Predicate<BaseEvent> fromUI(UI... uis) {
-        return event -> Utl.in(event.getUi(), uis);
+        return event -> EbaUtl.in(event.getUi(), uis);
     }
 
     public static Predicate<BaseEvent> fromSource(Object... objects) {
-        return event -> Utl.in(event.getSource(), objects);
+        return event -> EbaUtl.in(event.getSource(), objects);
     }
 
     public static Predicate<BaseEvent> fromMe() {
@@ -67,7 +67,7 @@ public class BaseEvent extends EventObject {
     }
 
     public static Predicate<BaseEvent> withScope(EventBusAwareScope... scopes) {
-        return event -> Utl.in(event.getScope(), scopes);
+        return event -> EbaUtl.in(event.getScope(), scopes);
     }
 
     public static Predicate<BaseEvent> withUiScope() {
@@ -131,7 +131,7 @@ public class BaseEvent extends EventObject {
     }
 
     public boolean verify(Predicate<BaseEvent> predicate) {
-        Utl.notNull(predicate);
+        EbaUtl.notNull(predicate);
         return predicate.test(this);
     }
 
@@ -140,12 +140,12 @@ public class BaseEvent extends EventObject {
     }
 
     public void exec(Runnable runnable) {
-        Utl.notNull(runnable);
+        EbaUtl.notNull(runnable);
         exec(UI.getCurrent(), runnable);
     }
 
     public void exec(UI ui, Runnable runnable) {
-        Utl.notNull(runnable);
+        EbaUtl.notNull(runnable);
 //        String caller = LogUtils.getCallerOf(this.getClass().getPackageName());
 //        log.trace(LogUtils.getDescr(this) + " executing task for " + caller);
         if (ui == null)
@@ -169,7 +169,7 @@ public class BaseEvent extends EventObject {
     }
 
     public boolean ifValid(Predicate<BaseEvent> predicate, Component component, Runnable runnable) {
-        Utl.allNotNull(predicate, component, runnable);
+        EbaUtl.allNotNull(predicate, component, runnable);
         boolean result = verify(predicate);
         if (result) exec(component.getUI().orElse(null), runnable);
         return result;
