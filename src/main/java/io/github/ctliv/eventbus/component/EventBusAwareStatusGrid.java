@@ -1,9 +1,11 @@
 package io.github.ctliv.eventbus.component;
 
 import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.shared.Registration;
 import io.github.ctliv.eventbus.EventBusAwareScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,8 @@ public class EventBusAwareStatusGrid extends Grid<EventBusAwareScope> {
     private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     private transient ScheduledFuture<?> scheduledFuture;
 
+    private boolean attached = false;
+
     public EventBusAwareStatusGrid() {
         super(EventBusAwareScope.class);
         removeAllColumns();
@@ -33,6 +37,19 @@ public class EventBusAwareStatusGrid extends Grid<EventBusAwareScope> {
             dialog.setHeight("80%");
             dialog.open();
         });
+
+        addAttachListener(attachEvent -> {
+            attached = true;
+            startUpdate();
+        });
+        addDetachListener(detachEvent -> {
+            stopUpdate();
+            attached = false;
+        });
+    }
+
+    public boolean isAttached() {
+        return attached;
     }
 
     private int intervalSeconds = 3;
