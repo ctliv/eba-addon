@@ -4,7 +4,7 @@ io\github\ctliv\eventbus\processor\EventBusAwareBeanPostProcessor.class
 io\github\ctliv\eventbus\component\EventBusAwareScopeDialog.class
 io\github\ctliv\eventbus\event\CancellableEvent.class
 io\github\ctliv\eventbus\bus\EventBusAwareSyncBus.class
-io\github\ctliv\eventbus\util\Utl.class
+io\github\ctliv\eventbus\util\EbaUtl.class
 io\github\ctliv\eventbus\EventBusAware.class
 io\github\ctliv\eventbus\component\EventBusAwareScopeDialog$Envelope.class
 io\github\ctliv\eventbus\EventBusAwareScope$1.class
