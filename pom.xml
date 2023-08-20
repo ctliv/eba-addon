@@ -6,7 +6,7 @@
     <groupId>io.github.ctliv</groupId>
     <artifactId>event-bus-aware-addon</artifactId>
     <name>Guava EventBus integration for Vaadin applications</name>
-    <version>0.9.0-SNAPSHOT</version>
+    <version>0.9.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -16,11 +16,12 @@
         <maven.compiler.release>8</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <vaadin.version>23.3.0</vaadin.version>
-        <guava.version>31.1-jre</guava.version>
-        <spring.version>5.3.28</spring.version>
-        <spring-security.version>5.8.3</spring-security.version>
+        <vaadin.version>14.0.0</vaadin.version>
+        <guava.version>30.0-jre</guava.version>
+        <spring.version>5.0.0.RELEASE</spring.version>
+        <spring-security.version>5.0.17.RELEASE</spring-security.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
+        <slf4j-version>1.7.30</slf4j-version>
 
         <repo.local.path>mvn-repo</repo.local.path>
         <repo.branch.name>repo</repo.branch.name>
@@ -106,6 +107,10 @@
                     <groupId>org.webjars.npm</groupId>
                     <artifactId>vaadin__vaadin-mobile-drag-drop</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.webjars.bowergithub.polymerelements</groupId>
+                    <artifactId>iron-iconset-svg</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -138,7 +143,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.36</version>
+            <version>${slf4j-version}</version>
         </dependency>
     </dependencies>
 

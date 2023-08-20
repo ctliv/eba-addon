@@ -8,13 +8,12 @@ import io.github.ctliv.eventbus.bus.EventBusAwareBus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class EventBusAwareScopeDialog extends Dialog {
 
     public static class Envelope {
-        private Object obj;
+        private final Object obj;
 
         public static Collection<Envelope> of(Object[] values) {
             if (values == null) return new ArrayList<>();
@@ -51,8 +50,7 @@ public class EventBusAwareScopeDialog extends Dialog {
                 EventBusAwareBus bus = (EventBusAwareBus) obj;
                 return "Bus: " + EventBusAwareScope.objHash(bus);
             } else if (obj instanceof String) {
-                String str = (String) obj;
-                return str;
+                return (String) obj;
             } else if (obj instanceof Envelope) {
                 return obj.toString();
             } else {
@@ -72,11 +70,11 @@ public class EventBusAwareScopeDialog extends Dialog {
     }
 
     public EventBusAwareScopeDialog() {
-        setHeaderTitle("EventBusAware Scopes");
-        setModal(true);
+        getElement().setProperty("headerTitle", "EventBusAware Scopes"); //setHeaderTitle("EventBusAware Scopes");
+        getElement().setProperty("modeless", false); //setModal(true);
         setCloseOnOutsideClick(true);
         setCloseOnEsc(true);
-        setDraggable(true);
+        getElement().setProperty("draggable", true); //setDraggable(true);
         TreeGrid<Envelope> grid = new TreeGrid<>();
         grid.setSizeFull();
         grid.setItems(Envelope.of(EventBusAwareScope.values()), this::getSubItems);
