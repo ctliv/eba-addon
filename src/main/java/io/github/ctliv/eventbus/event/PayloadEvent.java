@@ -1,25 +1,28 @@
 package io.github.ctliv.eventbus.event;
 
-import io.github.ctliv.eventbus.util.Utl;
+import io.github.ctliv.eventbus.util.EbaUtl;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class PayloadEvent<T> extends BaseEvent {
 
     public static Predicate<BaseEvent> withItem(Object... items) {
-        if (items == null) return event -> Utl.cast(event, PayloadEvent.class).getItem() == null;
+        if (items == null) return event -> EbaUtl.cast(event, PayloadEvent.class).getItem() == null;
         return event -> {
-            PayloadEvent<?> payloadEvent = Utl.cast(event, PayloadEvent.class);
-            return Arrays.stream(items).anyMatch(item -> Utl.eq(item, payloadEvent.getItem()));
+            PayloadEvent<?> payloadEvent = EbaUtl.cast(event, PayloadEvent.class);
+            return Arrays.stream(items).anyMatch(item -> Objects.equals(item, payloadEvent.getItem()));
         };
     }
 
     public static Predicate<BaseEvent> withType(Class<?>... types) {
-        if (types == null) return event -> Utl.cast(event, PayloadEvent.class).getType() == null;
+        if (types == null) return event -> EbaUtl.cast(event, PayloadEvent.class).getType() == null;
         return event -> {
-            PayloadEvent<?> payloadEvent = Utl.cast(event, PayloadEvent.class);
-            return Arrays.stream(types).anyMatch(type -> Utl.eq(type, payloadEvent.getType()));
+            PayloadEvent<?> payloadEvent = EbaUtl.cast(event, PayloadEvent.class);
+            if (payloadEvent.getType() == null) return Arrays.stream(types).anyMatch(Objects::isNull);
+            return Arrays.stream(types).filter(Objects::nonNull)
+                    .anyMatch(type -> type.isAssignableFrom(payloadEvent.getType()));
         };
     }
 
