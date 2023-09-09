@@ -1,15 +1,14 @@
 package io.github.ctliv.eventbus.component;
 
 import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.shared.Registration;
 import io.github.ctliv.eventbus.EventBusAwareScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -65,7 +64,7 @@ public class EventBusAwareStatusGrid extends Grid<EventBusAwareScope> {
 
     public synchronized void updateStatus() {
         try {
-            getUI().ifPresent(ui -> ui.access(() -> setItems(EventBusAwareScope.values())));
+            getUI().ifPresent(ui -> ui.access(() -> setItems(Arrays.asList(EventBusAwareScope.values()))));
         } catch (Exception e) {
             log.debug("Error in updating status grid", e);
         }
