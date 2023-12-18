@@ -20,7 +20,6 @@
         <guava.version>30.0-jre</guava.version>
         <spring.version>5.0.0.RELEASE</spring.version>
         <spring-security.version>5.0.17.RELEASE</spring-security.version>
-        <javax.servlet.version>4.0.1</javax.servlet.version>
         <slf4j-version>1.7.30</slf4j-version>
     </properties>
 
