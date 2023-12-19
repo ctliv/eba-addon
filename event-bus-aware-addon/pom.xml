@@ -6,7 +6,7 @@
     <groupId>io.github.ctliv</groupId>
     <artifactId>event-bus-aware-addon</artifactId>
     <name>Guava EventBus integration for Vaadin applications</name>
-    <version>1.0.1</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -152,7 +152,7 @@
                 <version>0.12</version>
                 <configuration>
                     <message>Artifacts for ${project.artifactId}:${project.version}</message>
-                    <noJekyll>true</noJekyll>
+                    <noJekyll>false</noJekyll>
                     <dryRun>false</dryRun>
                     <outputDirectory>${project.build.directory}/mvn-artifact</outputDirectory>
                     <branch>refs/heads/main</branch>
