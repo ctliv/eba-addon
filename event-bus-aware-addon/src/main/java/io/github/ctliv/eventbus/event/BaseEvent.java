@@ -130,13 +130,30 @@ public class BaseEvent extends EventObject {
         return thread;
     }
 
-    public boolean verify(Predicate<BaseEvent> predicate) {
+    public Optional<BaseEvent> optional(Predicate<BaseEvent> predicate) {
+        return check(predicate) ? Optional.of(this) : Optional.empty();
+    }
+
+    public boolean check(Predicate<BaseEvent> predicate) {
         EbaUtl.notNull(predicate);
         return predicate.test(this);
     }
 
-    public Optional<BaseEvent> check(Predicate<BaseEvent> predicate) {
-        return verify(predicate) ? Optional.of(this) : Optional.empty();
+    public boolean check(Predicate<BaseEvent> predicate, Runnable runnable) {
+        return check(predicate, UI.getCurrent(), runnable);
+    }
+
+    public boolean check(Predicate<BaseEvent> predicate, UI ui, Runnable runnable) {
+        boolean result = check(predicate);
+        if (result) exec(ui, runnable);
+        return result;
+    }
+
+    public boolean check(Predicate<BaseEvent> predicate, Component component, Runnable runnable) {
+        EbaUtl.allNotNull(predicate, component, runnable);
+        boolean result = check(predicate);
+        if (result) exec(component.getUI().orElse(null), runnable);
+        return result;
     }
 
     public void exec(Runnable runnable) {
@@ -156,23 +173,6 @@ public class BaseEvent extends EventObject {
             runnable.run();
         else
             ui.access(runnable::run);
-    }
-
-    public boolean ifValid(Predicate<BaseEvent> predicate, Runnable runnable) {
-        return ifValid(predicate, UI.getCurrent(), runnable);
-    }
-
-    public boolean ifValid(Predicate<BaseEvent> predicate, UI ui, Runnable runnable) {
-        boolean result = verify(predicate);
-        if (result) exec(ui, runnable);
-        return result;
-    }
-
-    public boolean ifValid(Predicate<BaseEvent> predicate, Component component, Runnable runnable) {
-        EbaUtl.allNotNull(predicate, component, runnable);
-        boolean result = verify(predicate);
-        if (result) exec(component.getUI().orElse(null), runnable);
-        return result;
     }
 
 }
