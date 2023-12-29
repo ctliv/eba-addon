@@ -3,7 +3,9 @@ package io.github.ctliv.eventbus.processor;
 import io.github.ctliv.eventbus.EventBusAware;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EventBusAwareBeanPostProcessor implements DestructionAwareBeanPostProcessor {
 
     @Override

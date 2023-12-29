@@ -1,1 +1,1 @@
-io.github.ctliv.eventbus.listener.EventBusAwareInitListener
+io.github.ctliv.eventbus.init.EventBusAwareInitListener
