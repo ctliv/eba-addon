@@ -51,4 +51,16 @@ public class PayloadEvent<T> extends BaseEvent {
         return payload.getClass();
     }
 
+/*
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (obj.getClass() != PayloadEvent.class) return false;
+        PayloadEvent<?> other = (PayloadEvent<?>) obj;
+        if (payload == null) return other.payload == null;
+        if (type != other.type) return false;
+        return payload.equals(other.payload);
+    }
+*/
 }
