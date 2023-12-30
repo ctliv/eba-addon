@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -80,6 +81,7 @@ public class BaseEvent extends EventObject {
     private String username;
     private final UI ui;
     private final transient Thread thread;
+    private final transient ArrayList<BaseEvent> followers = new ArrayList<>();
 
     public BaseEvent(Object source) {
         super(source);
@@ -129,6 +131,8 @@ public class BaseEvent extends EventObject {
     public Thread getThread() {
         return thread;
     }
+
+    public ArrayList<BaseEvent> getFollowers() { return followers; }
 
     public Optional<BaseEvent> optional(Predicate<BaseEvent> predicate) {
         return check(predicate) ? Optional.of(this) : Optional.empty();

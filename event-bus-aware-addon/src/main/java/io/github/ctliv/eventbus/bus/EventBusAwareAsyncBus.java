@@ -24,8 +24,13 @@ public class EventBusAwareAsyncBus extends AsyncEventBus implements EventBusAwar
     @Override
     public void post(Object event) {
         Objects.requireNonNull(event);
-        if (BaseEvent.class.isAssignableFrom(event.getClass())) ((BaseEvent) event).setScope(scope);
+        if (BaseEvent.class.isAssignableFrom(event.getClass())) {
+            ((BaseEvent) event).setScope(scope);
+        }
         super.post(event);
+        if (BaseEvent.class.isAssignableFrom(event.getClass())) {
+            ((BaseEvent) event).getFollowers().forEach(this::post);
+        }
     }
 
     @Override
