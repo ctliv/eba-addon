@@ -11,7 +11,7 @@ public class RequestEvent<T extends BaseEvent> extends PayloadEvent<T> {
         return event -> !EbaUtl.cast(event, RequestEvent.class).getQuestions().isEmpty();
     }
 
-    public static Predicate<BaseEvent> payload(Predicate<BaseEvent> predicate) {
+    public static Predicate<BaseEvent> checkPayload(Predicate<BaseEvent> predicate) {
         return event -> predicate.test((BaseEvent) EbaUtl.cast(event, PayloadEvent.class).getItem());
     }
 
